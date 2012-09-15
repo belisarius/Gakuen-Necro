@@ -17,6 +17,10 @@ def calculate(attributes):
     # Create the attr list.
     attr = []
 
+    # Create the attibutes dictionary.
+    attr_values = {'cruel':0, 'altru':0, 'honor':0, 'honesty':0,
+                   'violence':0, 'pacificism':0, 'romance':0, 'drama':0}
+
     # Iterate through all items that have been passed to the fucntion.
     for a in attributes:
         # If the attribute includes a :--that is, it has a modifier--then we
@@ -37,4 +41,21 @@ def calculate(attributes):
             # ('attribute',n).
         # Append the 'a' tuple to the list 'attr'.
         attr.append(a)
-    return attr
+    # Convert the attr list to a dictionary.
+    attr = dict(attr)
+    # Add the dictionary values together to get a dictionary with the
+    # new attribute values.
+    # Note: I actually borrowed this code from here:
+    # http://stackoverflow.com/questions/1031199/adding-dictionaries-in-python
+    attr = dict( (n, attr.get(n, 0)+attr_values.get(n, 0)) for n
+                 in set(attr).union(attr_values) )
+    # Initialize affectionValue, otherwise it can't be added to itself.
+    affectionValue = 0
+    # Loop through our dictionary.
+    for key, value in attr.items():
+        # Multiply the value of each attribute (technically, each
+        # multiplier) by 10, then add it to the tally.
+        affectionValue = affectionValue + value * 10
+    return affectionValue
+    
+    
